@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import javax.swing.SwingConstants;
@@ -407,6 +407,9 @@ public class ToDoList
     public void addData(JTextField descTextBox, JTextField dueDateTextBox)
     {
         newTask(descTextBox.getText(),dueDateTextBox.getText());
+		
+		addPanel();	//just resets fields
+		JOptionPane.showMessageDialog(null, "\"" + descTextBox.getText().trim() + "\" has been added.");
     }
 
     
@@ -440,6 +443,8 @@ public class ToDoList
         
 
         //add code to clear fields after entry is removed
+    	removePanel();	//resets the panel after pressing remove
+		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been removed.");
 
     }
 
@@ -456,6 +461,9 @@ public class ToDoList
          * =============================================
 
          */
+    	
+    	updateEntry();
+		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been updated.");
 
     }
 
@@ -476,7 +484,8 @@ public class ToDoList
         
 
         //add code to clear fields after item is completed and removed
-
+    	completePanel();
+		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been completed.");
     }
 
     
@@ -547,7 +556,7 @@ public class ToDoList
 
      */
 
-    public void search(JRadioButton descButton, JRadioButton dueDateButton, JRadioButton prioButton, JTextField keyword) 
+    public void search(JRadioButton descButton, /*JRadioButton dueDateButton,*/ JRadioButton prioButton, JTextField keyword) 
     {
         int itemIndex = -1;
         if(descButton.isSelected() == true)
@@ -560,7 +569,7 @@ public class ToDoList
                 }
             }
         }
-        else if(dueDateButton.isSelected() == true)
+        /*else if(dueDateButton.isSelected() == true)		//Removing due date search function because different tasks could have same due date
         {
             for(int iterator = 0; iterator < list.size(); iterator++)
             {
@@ -569,7 +578,7 @@ public class ToDoList
                     itemIndex = iterator;
                 }
             }
-        }
+        }*/
         else if(prioButton.isSelected() == true)
         {
             for(int iterator = 0; iterator < list.size(); iterator++)
@@ -745,7 +754,7 @@ public class ToDoList
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
 
-        JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
+        //JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
 
         
 
@@ -755,21 +764,25 @@ public class ToDoList
 
         searchType.add(rdbtnPriority);
 
-        searchType.add(rdbtnDueDate);
+        //searchType.add(rdbtnDueDate);
 
-        
+        /*
+         * Original values incase we want to add it back:
+         			rdbtnDescription.setBounds(81, 22, 79, 23);
+        			rdbtnPriority.setBounds(162, 22, 65, 23);
+         */
 
-        rdbtnDescription.setBounds(81, 22, 79, 23);
+        rdbtnDescription.setBounds(81, 22, 90, 23);
 
         rightPanel.add(rdbtnDescription);
 
-        rdbtnPriority.setBounds(162, 22, 65, 23);
+        rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
 
-        rdbtnDueDate.setBounds(229, 22, 79, 23);
+        //rdbtnDueDate.setBounds(229, 22, 79, 23);
 
-        rightPanel.add(rdbtnDueDate);
+        //rightPanel.add(rdbtnDueDate);
 
         
 
@@ -791,7 +804,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, rdbtnDueDate, rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
 
             }
 
@@ -977,7 +990,7 @@ public class ToDoList
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
 
-        JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
+        //JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
 
         
 
@@ -987,21 +1000,21 @@ public class ToDoList
 
         searchType.add(rdbtnPriority);
 
-        searchType.add(rdbtnDueDate);
+        //searchType.add(rdbtnDueDate);
 
         
 
-        rdbtnDescription.setBounds(81, 22, 79, 23);
+        rdbtnDescription.setBounds(81, 22, 90, 23);
 
         rightPanel.add(rdbtnDescription);
 
-        rdbtnPriority.setBounds(162, 22, 65, 23);
+        rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
 
-        rdbtnDueDate.setBounds(229, 22, 79, 23);
+        //rdbtnDueDate.setBounds(229, 22, 79, 23);
 
-        rightPanel.add(rdbtnDueDate);
+        //rightPanel.add(rdbtnDueDate);
 
         
 
@@ -1023,7 +1036,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, rdbtnDueDate, rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
 
             }
 
@@ -1203,7 +1216,7 @@ public class ToDoList
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
 
-        JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
+        //JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
 
         
 
@@ -1213,21 +1226,21 @@ public class ToDoList
 
         searchType.add(rdbtnPriority);
 
-        searchType.add(rdbtnDueDate);
+        //searchType.add(rdbtnDueDate);
 
         
 
-        rdbtnDescription.setBounds(81, 22, 79, 23);
+        rdbtnDescription.setBounds(81, 22, 90, 23);
 
         rightPanel.add(rdbtnDescription);
 
-        rdbtnPriority.setBounds(162, 22, 65, 23);
+        rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
 
-        rdbtnDueDate.setBounds(229, 22, 79, 23);
+        //rdbtnDueDate.setBounds(229, 22, 79, 23);
 
-        rightPanel.add(rdbtnDueDate);
+        //rightPanel.add(rdbtnDueDate);
 
         
 
@@ -1249,7 +1262,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, rdbtnDueDate, rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
 
             }
 
