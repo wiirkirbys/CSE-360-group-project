@@ -70,7 +70,7 @@ public class ToDoList
 
     private JTextField textField_3;
 
-    private JTextField textField_4;
+    private JTextField textField_4;	//Used as status text Field
 
     private JPanel rightPanel = new JPanel();
 
@@ -174,7 +174,7 @@ public class ToDoList
         else if(action.equals("add"))
         {
             report += "Task " + mutant.getDescription() + "added to list.\n";
-        }
+        } 
     }
 
     /**
@@ -406,10 +406,11 @@ public class ToDoList
 
     public void addData(JTextField descTextBox, JTextField dueDateTextBox)
     {
-        newTask(descTextBox.getText(),dueDateTextBox.getText());
+        String desc = descTextBox.getText().trim();
+    	newTask(desc, dueDateTextBox.getText());
 		
 		addPanel();	//just resets fields
-		JOptionPane.showMessageDialog(null, "\"" + descTextBox.getText().trim() + "\" has been added.");
+		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been added.");
     }
 
     
@@ -439,12 +440,18 @@ public class ToDoList
          * =============================================
 
          */
-
+    	String desc = descriptionField.getText().trim();
         
 
         //add code to clear fields after entry is removed
     	removePanel();	//resets the panel after pressing remove
-		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been removed.");
+    	
+    	if(desc.equals("Item Not Found."))
+    		JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+    	else if(desc.equals(""))
+    		JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
+    	else
+    		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been added.");
 
     }
 
@@ -461,9 +468,16 @@ public class ToDoList
          * =============================================
 
          */
+    	String desc = descriptionField.getText().trim();
     	
     	updateEntry();
-		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been updated.");
+    	
+    	if(desc.equals("Item Not Found."))
+    		JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+    	else if(desc.equals(""))
+    		JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
+    	else
+    		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
 
     }
 
@@ -481,11 +495,17 @@ public class ToDoList
 
          */
 
-        
+    	String desc = descriptionField.getText().trim();
 
         //add code to clear fields after item is completed and removed
     	completePanel();
-		JOptionPane.showMessageDialog(null, "\"" + descriptionField.getText().trim() + "\" has been completed.");
+    	
+    	if(desc.equals("Item Not Found."))
+    		JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+    	else if(desc.equals(""))
+    		JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
+    	else
+    		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been completed.");
     }
 
     
@@ -556,7 +576,7 @@ public class ToDoList
 
      */
 
-    public void search(JRadioButton descButton, /*JRadioButton dueDateButton,*/ JRadioButton prioButton, JTextField keyword) 
+    public void search(JRadioButton descButton, /*JRadioButton dueDateButton,*/ JRadioButton prioButton, JTextField keyword, int flag)	//flag designates whether it updates the status or not 
     {
         int itemIndex = -1;
         if(descButton.isSelected() == true)
@@ -591,15 +611,21 @@ public class ToDoList
         }
         if(itemIndex == -1)
         {
-            descriptionField.setText("item not found");
-            dueDateField.setText("item not found");
-            priorityField.setText("item not found");
+            descriptionField.setText("Item Not Found.");
+            dueDateField.setText("Item Not Found.");
+            priorityField.setText("Item Not Found.");
         }
         else
         {
             descriptionField.setText(list.get(itemIndex).getDescription());
             dueDateField.setText(list.get(itemIndex).getDueDate());
             priorityField.setText(Integer.toString(list.get(itemIndex).getPriority()));
+            
+            if(flag == 1) // Flag or 0 means were searching with the jComboBox. Flag 1 means it a textField_4 (Status text field)
+            	textField_4.setText(list.get(itemIndex).getStatus());	//shows current status of searched item
+            else if(list.get(itemIndex).getStatus().equals("In Progress")) {	//if its a combo box, checks if its the second choice. else it just shows the first option as default.
+            	//comboBoxStatus.selectedIndex = 1;		//comboBox shows index 2
+            }
         }
     }
 
@@ -804,7 +830,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField, 1);
 
             }
 
@@ -1036,7 +1062,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField, 0);
 
             }
 
@@ -1262,7 +1288,7 @@ public class ToDoList
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField);
+                search(rdbtnDescription, /*rdbtnDueDate,*/ rdbtnPriority, textField, 1);
 
             }
 
@@ -1364,11 +1390,13 @@ public class ToDoList
 
         
 
-        JComboBox comboBoxStatus = new JComboBox();
+        textField_4 = new JTextField();
 
-        comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Not Started", "In Progress"}));
+        textField_4.setEditable(false);
 
-        entryPanel.add(comboBoxStatus);
+        entryPanel.add(textField_4);
+
+        textField_4.setColumns(10);
 
         
 
