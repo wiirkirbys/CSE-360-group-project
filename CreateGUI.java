@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.Font;
@@ -166,6 +167,15 @@ public class CreateGUI {
 		 * ADD CODE HERE TO TAKE INFORMATION ENTERED AND ADD TO LIST
 		 * =============================================
 		 */
+		String desc = descriptionField.getText().trim();
+		String priority = priorityField.getText().trim();
+		String dueDate = dueDateField.getText().trim();
+		//int status = comboBoxStatus.getSelectedIndex(); //IDK why comboBoxStatus won't work, but the textFields show up
+		
+		
+		
+		addPanel();	//just resets fields
+		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been added.");
 	}
 	
 	/**
@@ -183,6 +193,8 @@ public class CreateGUI {
 		 */
 		
 		//add code to clear fields after entry is removed
+		removePanel();
+		JOptionPane.showMessageDialog(null, "\"" + "NAME_OF_ENTRY" + "\" has been removed.");
 	}
 	
 	public void updateData(JPanel panel) {
@@ -191,6 +203,9 @@ public class CreateGUI {
 		 * ADD CODE HERE TO TAKE INFORMATION ENTERED AND UPDATE LIST
 		 * =============================================
 		 */
+		
+		updateEntry();
+		JOptionPane.showMessageDialog(null, "\"" + "NAME_OF_ENTRY" + "\" has been updated.");
 	}
 	
 	public void completeEntry(JPanel panel) {
@@ -201,6 +216,8 @@ public class CreateGUI {
 		 */
 		
 		//add code to clear fields after item is completed and removed
+		completePanel();
+		JOptionPane.showMessageDialog(null, "\"" + "NAME_OF_ENTRY" + "\" has been completed.");
 	}
 	
 	public void print() {
@@ -296,7 +313,7 @@ public class CreateGUI {
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 		entries.add(lblStatus);
 		
-		JComboBox comboBoxStatus = new JComboBox();
+		JComboBox<String> comboBoxStatus = new JComboBox<String>();
 		comboBoxStatus.setModel(new DefaultComboBoxModel(new String[] {"Not Started", "In Progress", "Completed"}));
 		entries.add(comboBoxStatus);
 		
