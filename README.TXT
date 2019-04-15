@@ -7,7 +7,7 @@ all he/she needs to know. The comments should usually include at least:
 PROJECT TITLE: To Do List
 PURPOSE OF PROJECT: To create a virtual, manipulable list that can be used to store and organize tasks that the user has to do.
 VERSION or DATE: 1.0 4/12/2019
-HOW TO START THIS PROJECT: First download the program files from the repository https://github.com/wiirkirbys/CSE-360-group-project. Once                            downloaded, store the program files in a folder that will be used to store and load the program executable                                from. Before launching the executable jar file, download the latest version of java from                                                  https://www.java.com/en/download/. Once downloaded, double click the jar executable and proceed to execute the                            program. 
+HOW TO START THIS PROJECT: First download the program files from the repository https://github.com/wiirkirbys/CSE-360-group-project. 				   Once downloaded, store the program files in a folder that will be used to store and load the program 				   executable from. Before launching the executable jar file, download the latest version of java from           			    https://www.java.com/en/download/. Once downloaded, double click the jar executable and proceed to execute 				   the program. 
 AUTHORS: Alexander Bauman, Sonny Huynh, Kevin Mcallister, Tony Tipton
 USER INSTRUCTIONS:
 
