@@ -60,9 +60,30 @@ public class Task
      *
      * @return status the current completion status of the task
      */
-    public int getStatus()
+    public String getStatus()
     {
-        return status;
+        if(status == 0)
+        {
+            return "Not started";
+        }
+        else if(status == 1)
+        {
+            return "started";
+        }
+        else
+        {
+            return "finished";
+        }
+    }
+    
+    /**
+     * sets due date
+     *
+     * @param dueDate the new due date of the task to be set
+     */
+    public void setDueDate(String newDueDate)
+    {
+        dueDate = newDueDate;
     }
     
     /**
