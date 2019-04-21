@@ -21,7 +21,7 @@ public class Task
     {
         description = desc;
         dueDate = due;
-        priority = prio;
+        priority = prio+1; //add 1 because it starts at 0 otherwise
         status = 0;
     }
 
