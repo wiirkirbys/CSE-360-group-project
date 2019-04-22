@@ -53,6 +53,7 @@ import javax.swing.JTextArea;
  * print() which prints the report, save() which saves the current entries to a file, load() which loads previously
  * saved entries to the program, and exit() which exits the program.
  */
+
 public class ToDoList
 {
     /**
@@ -159,9 +160,8 @@ public class ToDoList
     }
     
     /**
-     * This method searches for the task by description, priority number, or date and 
-     * updates the entry from the list. The method also changes the report and organizes the
-     * array list based on the information changed
+     * This method searches for the task by description and updates the entry from the list. 
+     * The method also changes the report and organizes the array list based on the information changed
      * 
      * @param desc desc contains information about the current task
      * @param dueDate dueDate stores the due date of the task
@@ -215,7 +215,7 @@ public class ToDoList
         list.get(index).setDueDate(dueDate);
         list.get(index).setPriority(priority);
         list.get(index).setStatus(status);
-        report += "to due date: " + list.get(index).getDueDate();
+        report += " to due date: " + list.get(index).getDueDate();
         report += ", priority: " + list.get(index).getPriority();
         report += " and status: "+list.get(index).getStatus() + ".\n";
     }
@@ -295,7 +295,7 @@ public class ToDoList
     }
     
     /**
-     * This method calls the print function to print the list.
+     * This method calls the print function to print the list into a text file.
      * @return there is no return value
      */
     
@@ -704,7 +704,7 @@ public class ToDoList
     {
         String desc = descTextBox.getText().trim();
         
-	completePanel();
+        completePanel(); // resets the task completed panel
         //updateEntry();
         
         if(desc.equals("Item Not Found."))
@@ -714,14 +714,10 @@ public class ToDoList
         else
         {
             JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
-            updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), 2);
+            //updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), 2);
             completeTask(desc);
         }
     }
-
-    
-
-
 
     /**
      * This method renders a JPanel with text fields when the user presses the
