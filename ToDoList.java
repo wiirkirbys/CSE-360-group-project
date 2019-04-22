@@ -1,88 +1,79 @@
 
 /**
- * Write a description of class ToDoList here.
- *
+ * <h1>To Do List </h1>
+ * 
+ * @author Alexander Bauman
+ * @author Sonny Huynh
  * @author Kevin McAllister
+ * @author Tony Tipton
+ * 
+ * @version Project 1.0
+ * @since 4-22-2019
+ * 
+ * The To Do List program implements an application that creates a graphical user interface that allows the manipulation
+ * of an array list of objects. The user may add an entry, remove an entry, update an entry, complete an entry, display the
+ * currently stored entries, restore entries, load entries from a file, store the entries to a file, and save and exit the
+ * program. Each operation is executed based on buttons within the graphical user interface which operates an array list which
+ * stores the entries as objects.
+ * <p>
+ * 
  */
+
 import java.io.BufferedReader;
-
 import java.io.BufferedWriter;
-
 import java.io.FileReader;
-
 import java.util.*;
-
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
 import java.awt.GridLayout;
-
 import javax.swing.JPanel;
-
 import javax.swing.JButton;
-
 import javax.swing.JLabel;
-
 import javax.swing.JOptionPane;
-
 import javax.swing.JTextField;
-
 import javax.swing.SwingConstants;
-
 import java.awt.Font;
-
 import java.awt.event.ActionListener;
-
 import java.awt.event.ActionEvent;
-
 import java.awt.event.KeyAdapter;
-
 import java.awt.event.KeyEvent;
-
 import javax.swing.JComboBox;
-
 import javax.swing.ButtonGroup;
-
 import javax.swing.DefaultComboBoxModel;
-
 import javax.swing.JRadioButton;
-
 import javax.swing.JScrollPane;
-
 import javax.swing.JTextArea;
+
+
+/**
+ * Class ToDoList declares and implements various operations of the array list as well as manages the
+ * constructions of the graphical interface. The most notable operation defined are newTask() which adds an entry, 
+ * removeTask()which removes an entry, updateTask()which updates an entry, completeTask() which changes the status 
+ * to complete, displayList() which displays the current entries, updateReport() which updates the report, 
+ * print() which prints the report, save() which saves the current entries to a file, load() which loads previously
+ * saved entries to the program, and exit() which exits the program.
+ */
 public class ToDoList
 {
-    
-    // instance variables - replace the example below with your own
+    /**
+     * The private variables used to store entries and create the graphical user interface
+     */
+	
     public ArrayList<Task> list = new ArrayList();
-    
     public String report;
-    
     private JFrame frame;
-    
     private JTextField descriptionField;
-    
     private JTextField priorityField;
-
     private JTextField dueDateField;
-
     private JTextField statusField;
-    
     private JTextField textField;
-    
     private JComboBox comboBoxStatus;
-
     private JPanel rightPanel = new JPanel();
-
     private JButton btnRemove2;
-
     private JTextArea txtareaDisplay = new JTextArea();
     
     /**
-
      * Launch the application.
-
      */
 
     public static void main(String[] args) {
@@ -111,7 +102,11 @@ public class ToDoList
 
     /**
      * Constructor for objects of class ToDoList
+     * 
+     * @param There is no parameters
+     * @return there is no return value
      */
+    
     public ToDoList()
     {
         CreateGUI();
@@ -123,6 +118,7 @@ public class ToDoList
      * @param  description  a description of what the task entails
      * @param  dueDate  the date when the task is due
      */
+    
     public void newTask(String description, String dueDate) 
     {
         list.add(new Task(description, dueDate, list.size()));
@@ -130,6 +126,14 @@ public class ToDoList
 
         updateReport("add", list.get(list.size()-1));
     }
+    
+    /**
+     * Searches for a task by description, priority number, or date and deletes the entry from the list.
+     * Shifts the priority of each remaining entry to a new priority if needed and updates the report.
+     * 
+     * @param desc desc holds information about a task that is to be deleted.
+     * @return There is no return value
+     */
     
     public void deleteTask(String desc)
     {
@@ -153,6 +157,18 @@ public class ToDoList
         list.remove(index);
         
     }
+    
+    /**
+     * This method searches for the task by description, priority number, or date and 
+     * updates the entry from the list. The method also changes the report and organizes the
+     * array list based on the information changed
+     * 
+     * @param desc desc contains information about the current task
+     * @param dueDate dueDate stores the due date of the task
+     * @param priority priority stores the priority number of the task
+     * @param status status holds the current status of the task
+     * @return there is no return value
+     */
     
     public void updateTask(String desc, String dueDate, int priority, int status)
     {
@@ -204,6 +220,14 @@ public class ToDoList
         report += " and status: "+list.get(index).getStatus() + ".\n";
     }
     
+    /**
+     * This method updates a task to the status of being completed and removes it from
+     * the array list and keeps the list organized. It also updates the report.
+     * 
+     * @param desc desc stores the information about the task.
+     * @return there is no return value
+     */
+    
     public void completeTask(String desc)
     {
         int index = 0;
@@ -225,7 +249,12 @@ public class ToDoList
         updateReport("complete", list.get(index));
         list.remove(index);
     }
-
+    
+    /**
+     * This method iterates through the array list and prints out every entry's information
+     * @return there is no return value
+     */
+    
     public void displayList()
     {
         String display = "";
@@ -240,6 +269,14 @@ public class ToDoList
         txtareaDisplay.setText(display);
     }
    
+    /**
+     * This method is a helper method which aids in updating the report to the necessary information
+     * 
+     * @param action action compares the action taken
+     * @param mutant holds the information about the task to be changed
+     * @return there is no return value
+     */
+    
     public void updateReport(String action, Task mutant)
     {
         //report += Calendar.MONTH + "/" + Calendar.DAY_OF_MONTH + "/" + Calendar.YEAR + " @ " + Calendar.HOUR_OF_DAY + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "- ";
@@ -257,15 +294,32 @@ public class ToDoList
         }
     }
     
+    /**
+     * This method calls the print function to print the list.
+     * @return there is no return value
+     */
+    
     public void print() 
     {
         System.out.println(report);
     }
     
+    /**
+     * This method stores the current array list into a file.
+     * 
+     * @return there is no return value
+     */
+    
     public void save() 
     {
 
     }
+    
+    /**
+     * This method loads a previously saved array list back into the program for further implementation.
+     * 
+     * @return there is no return value
+     */
     
     public void load()
     {
@@ -273,9 +327,9 @@ public class ToDoList
     }
 
     /**
-
-     * Create the application.
-
+     * This method create the graphical user interface application.
+     * 
+     * @return there is no return value
      */
 
     public void CreateGUI() {
@@ -293,9 +347,9 @@ public class ToDoList
     }
 
     /**
-
-     * Initialize the contents of the frame.
-
+     * This method initialize the contents of the frame.
+     * 
+     * @return there is no return value
      */
 
     private void initialize() 
@@ -488,15 +542,11 @@ public class ToDoList
     
 
     /**
-
      * This method is called when the user presses the submit button on the add
-
      * panel to add the entry to the list and remove the panel from the frame
-
      * 
-
      * @param panel the panel to pull data from
-
+     * @return there is no return value
      */
 
     public void addData(JTextField descTextBox, JTextField dueDateTextBox)
@@ -511,19 +561,15 @@ public class ToDoList
     
 
     /**
-
      * This method is called when the user presses the 'Remove Entry' 
-
      * button to remove the entry from the list and remove the panel from 
-
      * the frame
-
      * 
-
      * @param panel the panel to pull data from
-
+     * @return there is no return value
      */
 
+    
     public void removeData(JTextField descTextBox) 
     {
         String desc = descTextBox.getText().trim();
@@ -563,13 +609,10 @@ public class ToDoList
 
 
     /**
-
      * This method searches the list for an entry and displays its data in the relevant fields
-
      * 
-
      * @param panel
-
+     * @return there is no return value
      */
 
     public void search(JRadioButton descButton, JRadioButton prioButton, JTextField keyword) 
@@ -680,11 +723,10 @@ public class ToDoList
 
 
     /**
-
      * This method renders a JPanel with text fields when the user presses the
-
      * add entry button
-
+     * 
+     * @return there is no return value
      */
 
     public void addPanel() {
