@@ -704,7 +704,8 @@ public class ToDoList
     {
         String desc = descTextBox.getText().trim();
         
-        updateEntry();
+	completePanel();
+        //updateEntry();
         
         if(desc.equals("Item Not Found."))
             JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
