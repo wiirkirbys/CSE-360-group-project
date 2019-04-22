@@ -61,7 +61,7 @@ public class ToDoList
      */
 	
     public ArrayList<Task> list = new ArrayList();
-    public String report;
+    public String report = "";
     private JFrame frame;
     private JTextField descriptionField;
     private JTextField priorityField;
