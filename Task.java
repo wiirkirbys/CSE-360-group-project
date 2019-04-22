@@ -68,11 +68,11 @@ public class Task
         }
         else if(status == 1)
         {
-            return "started";
+            return "In Progress";
         }
         else
         {
-            return "finished";
+            return "Completed";
         }
     }
     
