@@ -357,7 +357,7 @@ public class ToDoList
 
         frame = new JFrame();
 
-        frame.setBounds(100, 100, 688, 406);
+        frame.setBounds(100, 100, 720, 500);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
