@@ -1,3 +1,5 @@
+package toDoList;
+
 /**
  * <h1>To Do List </h1>
  * 
@@ -67,7 +69,8 @@ public class ToDoList
      */
 	
     public ArrayList<Task> list = new ArrayList();
-    public String report = "";
+    //public String report = "";
+    public ArrayList<String> report = new ArrayList();
     private JFrame frame;
     private JTextField descriptionField;
     private JTextField priorityField;
@@ -210,18 +213,20 @@ public class ToDoList
         }
         
         //report += Calendar.MONTH + "/" + Calendar.DAY_OF_MONTH + "/" + Calendar.YEAR + " @ " + Calendar.HOUR_OF_DAY + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "- ";
-        report += "Task updated from description: " + list.get(itemIndex).getDescription();
-        report +=  ", due date: " + list.get(itemIndex).getDueDate();
-        report += ", priority: " + list.get(itemIndex).getPriority();
-        report += " and status: "+list.get(itemIndex).getStatus();
+        String reportStr = "";
+        reportStr += "Task updated from description: " + list.get(itemIndex).getDescription();
+        reportStr +=  ", due date: " + list.get(itemIndex).getDueDate();
+        reportStr += ", priority: " + list.get(itemIndex).getPriority();
+        reportStr += " and status: "+list.get(itemIndex).getStatus();
         list.get(itemIndex).setDescription(desc);
         list.get(itemIndex).setDueDate(dueDate);
         list.get(itemIndex).setPriority(priority);
         list.get(itemIndex).setStatus(status);
-        report += " to description: " + list.get(itemIndex).getDescription();
-        report += ", due date: " + list.get(itemIndex).getDueDate();
-        report += ", priority: " + list.get(itemIndex).getPriority();
-        report += " and status: "+list.get(itemIndex).getStatus() + ".\n";
+        reportStr += " to description: " + list.get(itemIndex).getDescription();
+        reportStr += ", due date: " + list.get(itemIndex).getDueDate();
+        reportStr += ", priority: " + list.get(itemIndex).getPriority();
+        reportStr += " and status: "+list.get(itemIndex).getStatus() + ".\n";
+        report.add(reportStr);
     }
     
     /**
@@ -333,20 +338,20 @@ public class ToDoList
         //report += Calendar.MONTH + "/" + Calendar.DAY_OF_MONTH + "/" + Calendar.YEAR + " @ " + Calendar.HOUR_OF_DAY + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "- ";
         if(action.equals("delete"))
         {
-        	report += "Task " + mutant.getDescription() + " from list"
-        			+ " on " + currentDay + " at " + currentTime + ".\n";
+        	report.add("Task " + mutant.getDescription() + " from list"
+        			+ " on " + currentDay + " at " + currentTime + ".\n");
         }
         else if(action.equals("add"))
         {
-            report += "Task " + mutant.getDescription() + ", with due date: "
+            report.add("Task " + mutant.getDescription() + ", with due date: "
             		+ mutant.getDueDate() + ", priority: " + mutant.getPriority()
             		+ ", and status: " + mutant.getStatus() + " added to list"
-            		+ " on " + currentDay + " at " + currentTime + ".\n";
+            		+ " on " + currentDay + " at " + currentTime + ".\n");
         } 
         else if(action.equals("complete"))
         {
-            report += "Task " + mutant.getDescription() + " completed and removed from list"
-            		+ " on " + currentDay + " at " + currentTime + ".\n";
+            report.add("Task " + mutant.getDescription() + " completed and removed from list"
+            		+ " on " + currentDay + " at " + currentTime + ".\n");
         }
     }
     
@@ -357,13 +362,36 @@ public class ToDoList
     
     public void print() 
     {
-    	if(report.equals("")) {
-    		txtareaDisplay.setText("No report available. Add an enrty to the "
-    				+ "to-do list and try again.");
-    	}
-    	else {
-    		System.out.println(report);
-    	}
+//    	if(report.equals("")) {
+//    		txtareaDisplay.setText("No report available. Add an enrty to the "
+//    				+ "to-do list and try again.");
+//    	}
+//    	else {
+//    		System.out.println(report);
+//    	}
+    	File file = new File("report.txt");
+    	if(file.delete());
+    	//Create the file
+    	try {
+			file.createNewFile();
+			//FileWriter writer = new FileWriter(file);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+			
+	    	//writer.write(report);
+	    	//writer.newLine();
+	    	for(int iterator = 0; iterator < report.size(); iterator++) {
+	    		bw.write(report.get(iterator));
+	    		bw.newLine();
+	    	}
+//			bw.write(report);
+//			bw.newLine();
+//			bw.write("Hello");
+			
+	    	bw.close();
+		} 
+    	catch (IOException e) {
+    		e.printStackTrace();
+		}
     }
     
     /**
@@ -383,7 +411,7 @@ public class ToDoList
 			
 	    	writer.write(list.size() + "\n");
 	    	
-	    	for(int iterator = 0; iterator < 3; iterator++) {
+	    	for(int iterator = 0; iterator < list.size(); iterator++) {
 	    		writer.write(list.get(iterator).getDescription() + "\n");
 	    		writer.write(list.get(iterator).getDueDate() + "\n");
 	    		writer.write(list.get(iterator).getPriority() + "\n");
@@ -400,7 +428,11 @@ public class ToDoList
 	    		}
 	    		writer.write(statusInt + "\n");
 	    	}
-	    	writer.write(report);
+	    	String reportStr = "";
+	    	for(int iterator = 0; iterator < report.size(); iterator++) {
+	    		reportStr += report.get(iterator);
+	    	}
+	    	writer.write(reportStr);
 	    	
 	    	writer.close();
 		} 
@@ -436,9 +468,9 @@ public class ToDoList
 				list.add(newTask);
 			}
 			String line; 
+
 	    	while ((line = br.readLine()) != null) {
-	    	    report += line;
-	    	    report += "\n";
+	    	    report.add(line);
 	    	}
 	    	
 	    	txtareaDisplay.setText("To-do list loaded from list.txt");
@@ -1826,7 +1858,7 @@ public class ToDoList
 
         txtareaDisplay = new JTextArea();
 
-        txtareaDisplay.setText("Report printed to console.");
+        txtareaDisplay.setText("Report printed to report.txt.");
 
         txtareaDisplay.setEditable(false);
 
@@ -1941,8 +1973,10 @@ public class ToDoList
 			public void actionPerformed(ActionEvent arg0) {
 				File file = new File("list.txt");
 		    	if(file.delete());
+		    	file = new File("report.txt");
+		    	if(file.delete());
 		    	list.clear();
-		    	report = "";
+		    	report.clear();
 		    	JOptionPane.showMessageDialog(null, "List successfully cleared!");
 			}
 		});
