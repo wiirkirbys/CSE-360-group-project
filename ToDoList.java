@@ -18,8 +18,13 @@
  * 
  */
 
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.*;
 import java.text.*;
@@ -31,6 +36,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
@@ -351,7 +357,13 @@ public class ToDoList
     
     public void print() 
     {
-        System.out.println(report);
+    	if(report.equals("")) {
+    		txtareaDisplay.setText("No report available. Add an enrty to the "
+    				+ "to-do list and try again.");
+    	}
+    	else {
+    		System.out.println(report);
+    	}
     }
     
     /**
@@ -362,7 +374,41 @@ public class ToDoList
     
     public void save() 
     {
+    	File file = new File("list.txt");
+    	if(file.delete());
+    	//Create the file
+    	try {
+			file.createNewFile();
+			FileWriter writer = new FileWriter(file);
+			
+	    	writer.write(list.size() + "\n");
+	    	
+	    	for(int iterator = 0; iterator < 3; iterator++) {
+	    		writer.write(list.get(iterator).getDescription() + "\n");
+	    		writer.write(list.get(iterator).getDueDate() + "\n");
+	    		writer.write(list.get(iterator).getPriority() + "\n");
+	    		String statusStr = list.get(iterator).getStatus();
+	    		int statusInt = -1;
+	    		if(statusStr.equals("Not started")) {
+	    			statusInt = 0;
+	    		}
+	    		else if(statusStr.equals("In Progress")) {
+	    			statusInt = 1;
+	    		}
+	    		else if(statusStr.equals("Finished")) {
+	    			statusInt = 2;
+	    		}
+	    		writer.write(statusInt + "\n");
+	    	}
+	    	writer.write(report);
+	    	
+	    	writer.close();
+		} 
+    	catch (IOException e) {
+    		e.printStackTrace();
+		}
 
+    	 
     }
     
     /**
@@ -373,7 +419,39 @@ public class ToDoList
     
     public void load()
     {
-        
+    	File file = new File("list.txt");
+    	BufferedReader br;
+		try {
+			br = new BufferedReader(new FileReader(file));
+			int numEntries = -1;
+			if((numEntries = Integer.parseInt(br.readLine())) != -1);
+			
+			
+			for(int iterator = 0; iterator < numEntries; iterator++) {
+				String description = br.readLine();
+				String dueDate = br.readLine();
+				int priority = Integer.parseInt(br.readLine());
+				Task newTask = new Task(description, dueDate, priority);
+				newTask.setStatus(Integer.parseInt(br.readLine()));
+				list.add(newTask);
+			}
+			String line; 
+	    	while ((line = br.readLine()) != null) {
+	    	    report += line;
+	    	    report += "\n";
+	    	}
+	    	
+	    	txtareaDisplay.setText("To-do list loaded from list.txt");
+	    	
+	    	br.close();
+		} catch (FileNotFoundException e) {
+			txtareaDisplay.setText("Unable to load to-do list from list.txt");
+			//e.printStackTrace();
+		} catch (IOException e) {
+			//e.printStackTrace();
+		} 
+    	  
+    	  
     }
 
     /**
@@ -561,23 +639,23 @@ public class ToDoList
 
         
 
-        JButton btnSaveAndQuit = new JButton("Save and Quit");
+        JButton btnRestart = new JButton("Restart List");
 
-        btnSaveAndQuit.addActionListener(new ActionListener() 
+        btnRestart.addActionListener(new ActionListener() 
         {
 
             public void actionPerformed(ActionEvent arg0) 
             {
 
-                save();
+                restartPanel();
 
-                System.exit(0);
+                //System.exit(0);
 
             }
 
         });
 
-        buttonPanel.add(btnSaveAndQuit);
+        buttonPanel.add(btnRestart);
 
     }
 
@@ -1748,7 +1826,7 @@ public class ToDoList
 
         txtareaDisplay = new JTextArea();
 
-        txtareaDisplay.setText("Report printed to report.txt");
+        txtareaDisplay.setText("Report printed to console.");
 
         txtareaDisplay.setEditable(false);
 
@@ -1789,7 +1867,7 @@ public class ToDoList
 
         txtareaDisplay = new JTextArea();
 
-        txtareaDisplay.setText("Report saved to list.txt");
+        txtareaDisplay.setText("To-do list saved to list.txt");
 
         txtareaDisplay.setEditable(false);
 
@@ -1842,4 +1920,40 @@ public class ToDoList
 
     }
 
+    /**
+     * This method renders a panel that gives the user the option to delete
+     * the list and start with a new one.
+     * 
+     * @return there is no return value
+     */
+    
+    public void restartPanel() {
+    	frame.remove(rightPanel);
+		frame.repaint();
+		
+		rightPanel = new JPanel();
+		rightPanel.setBounds(301, 24, 361, 319);
+		frame.getContentPane().add(rightPanel);
+		rightPanel.setLayout(null);
+		
+		JButton btnRestart = new JButton("Restart");
+		btnRestart.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				File file = new File("list.txt");
+		    	if(file.delete());
+		    	list.clear();
+		    	report = "";
+		    	JOptionPane.showMessageDialog(null, "List successfully cleared!");
+			}
+		});
+		btnRestart.setBounds(239, 74, 112, 31);
+		rightPanel.add(btnRestart);
+		
+		JTextPane txtpnRestart = new JTextPane();
+		txtpnRestart.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		txtpnRestart.setText("Do you want to restart with a new\nto-do list? This cannot be undone.");
+		txtpnRestart.setBounds(10, 11, 341, 52);
+		rightPanel.add(txtpnRestart);
+    }
+    
 }

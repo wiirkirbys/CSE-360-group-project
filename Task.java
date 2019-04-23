@@ -1,8 +1,11 @@
 /**
- * A task object that contains all relevent data.
+ * A task object that contains all relevant data.
  * Said data includes task description, priority, completion status, and due date.
  * 
+ * @author Alexander Bauman
+ * @author Sonny Huynh
  * @author Kevin McAllister
+ * @author Tony Tipton
  */
 public class Task
 {
