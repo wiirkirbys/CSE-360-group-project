@@ -1,4 +1,3 @@
-
 /**
  * A task object that contains all relevent data.
  * Said data includes task description, priority, completion status, and due date.
@@ -21,14 +20,14 @@ public class Task
     {
         description = desc;
         dueDate = due;
-        priority = prio+1; //add 1 because it starts at 0 otherwise
+        priority = prio;
         status = 0;
     }
 
     /**
-     * Sets priority to the given value
+     * Sets priority to the given value.
      *
-     * @param prio the new priority to be set
+     * @param newPrio the new priority to be set
      */
     public void setPriority(int newPrio)
     {
@@ -36,7 +35,7 @@ public class Task
     }
     
     /**
-     * returns priority
+     * Returns the priority.
      *
      * @return priority the current priority of the task
      */
@@ -46,7 +45,7 @@ public class Task
     }
     
     /**
-     * Sets completion status to the given value
+     * Sets completion status to the given value.
      *
      * @param prio the new completion status to be set
      */
@@ -56,7 +55,7 @@ public class Task
     }
     
     /**
-     * returns completion status
+     * Returns the completion status.
      *
      * @return status the current completion status of the task
      */
@@ -72,12 +71,12 @@ public class Task
         }
         else
         {
-            return "Completed";
+            return "Finished";
         }
     }
     
     /**
-     * sets due date
+     * Sets the due date.
      *
      * @param dueDate the new due date of the task to be set
      */
@@ -87,7 +86,7 @@ public class Task
     }
     
     /**
-     * returns due date
+     * Returns the due date.
      *
      * @return dueDate the due date of the task
      */
@@ -97,7 +96,17 @@ public class Task
     }
     
     /**
-     * returns description 
+     * Sets the description.
+     * 
+     * @param newDescription the new description of the task to be set
+     */
+    
+    public void setDescription(String newDescription) {
+    	description = newDescription;
+    }
+    
+    /**
+     * Returns the description.
      *
      * @return status the current description of the task
      */
