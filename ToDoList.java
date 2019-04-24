@@ -69,7 +69,6 @@ public class ToDoList
      */
 	
     public ArrayList<Task> list = new ArrayList();
-    //public String report = "";
     public ArrayList<String> report = new ArrayList();
     private JFrame frame;
     private JTextField descriptionField;
@@ -79,14 +78,14 @@ public class ToDoList
     private JTextField textField;
     private JComboBox comboBoxStatus;
     private JPanel rightPanel = new JPanel();
-    //private JButton btnRemove2;
     private JTextArea txtareaDisplay = new JTextArea();
     private int itemIndex = -1;
     private DateFormat day = new SimpleDateFormat("MM/dd/yyyy");
     private DateFormat time = new SimpleDateFormat("HH:mm");
     
     /**
-     * Launch the application.
+     * Main launches the application by creating an ToDoList object,
+     * then initializing the object with the function "ToDoList()".
      */
 
     public static void main(String[] args) {
@@ -106,73 +105,77 @@ public class ToDoList
                     e.printStackTrace();
 
                 }
-
             }
-
         });
-
     }
 
     /**
-     * Constructor for objects of class ToDoList
+     * Constructor for objects of class ToDoList.
+     * Calls the function CreateGUI().
      * 
      * @param There is no parameters
      * @return there is no return value
      */
     
-    public ToDoList()
-    {
+    public ToDoList() {
+    	
         CreateGUI();
+        
     }
 
     /**
-     * Creates a new task and adds it to the bottom of the list.
+     * Creates a new task and adds it to the bottom of the list and adds it to the report.
      *
      * @param  description  a description of what the task entails
      * @param  dueDate  the date when the task is due
+     * @return There is no return value.
      */
     
-    public void newTask(String description, String dueDate) 
-    {
+    public void newTask(String description, String dueDate) {
+    	
         list.add(new Task(description, dueDate, list.size()));
-
-
-        updateReport("add", list.get(list.size()-1));
+        
+        updateReport("add", list.get(list.size() - 1));
     }
     
     /**
-     * Searches for a task by description, priority number, or date and deletes the entry from the list.
+     * Searches for a task by description or priority number and deletes the entry from the list.
      * Shifts the priority of each remaining entry to a new priority if needed and updates the report.
      * 
      * @param desc holds information about a task that is to be deleted.
      * @return There is no return value
      */
     
-    public void deleteTask(String desc)
-    {
+    public void deleteTask(String desc) {
+    	
         int index = 0;
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-            if(list.get(iterator).getDescription().equals(desc))
-            {
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+            if(list.get(iterator).getDescription().equals(desc)) {
+            	
                 index = iterator;
+                
             }
         }
-        // increases priority of all lower priority tasks by 1
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-            if(list.get(iterator).getPriority() > list.get(index).getPriority())
-            {
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+            if(list.get(iterator).getPriority() > list.get(index).getPriority()) {
+            	
                 list.get(iterator).setPriority(list.get(iterator).getPriority() - 1);
+                
             }
         }
+        
         updateReport("delete", list.get(index));
         list.remove(index);
         
     }
     
     /**
-     * This method updates the task by description and updates the entry from the list. 
+     * This method searches for a task by priority number or description and updates task information with
+     * the parameters passed. 
      * The method also changes the report and organizes the array list based on the information changed
      * 
      * @param desc contains information about the current task
@@ -182,51 +185,60 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void updateTask(String desc, String dueDate, int priority, int status)
-    {
+    public void updateTask(String desc, String dueDate, int priority, int status) {
         
-        if(priority <= 0)
-        {
+        if(priority <= 0) {
+        	
             priority = 0;
-        }
-        else if(priority > list.size())
-        {
-            priority = list.size()-1;
+            
         }
         
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-            if(priority > list.get(itemIndex).getPriority())
-            {
-                if(list.get(iterator).getPriority() > list.get(itemIndex).getPriority() && list.get(iterator).getPriority() <= priority)
-                {
+        else if(priority > list.size()) {
+        	
+            priority = list.size() - 1;
+            
+        }
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+            
+        	if(priority > list.get(itemIndex).getPriority()) {
+                
+        		if(list.get(iterator).getPriority() > list.get(itemIndex).getPriority() && list.get(iterator).getPriority() <= priority) {
+        			
                     list.get(iterator).setPriority(list.get(iterator).getPriority() - 1);
+                    
                 }
             }
-            else
-            {
-                if(list.get(iterator).getPriority() < list.get(itemIndex).getPriority() && list.get(iterator).getPriority() >= priority)
-                {
+        	
+            else {
+            	
+                if(list.get(iterator).getPriority() < list.get(itemIndex).getPriority() && list.get(iterator).getPriority() >= priority) {
+                	
                     list.get(iterator).setPriority(list.get(iterator).getPriority() + 1);
+                    
                 }
             }
         }
         
-        //report += Calendar.MONTH + "/" + Calendar.DAY_OF_MONTH + "/" + Calendar.YEAR + " @ " + Calendar.HOUR_OF_DAY + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "- ";
         String reportStr = "";
+        
         reportStr += "Task updated from description: " + list.get(itemIndex).getDescription();
         reportStr +=  ", due date: " + list.get(itemIndex).getDueDate();
         reportStr += ", priority: " + list.get(itemIndex).getPriority();
-        reportStr += " and status: "+list.get(itemIndex).getStatus();
+        reportStr += " and status: " + list.get(itemIndex).getStatus();
+        
         list.get(itemIndex).setDescription(desc);
         list.get(itemIndex).setDueDate(dueDate);
         list.get(itemIndex).setPriority(priority);
         list.get(itemIndex).setStatus(status);
+        
         reportStr += " to description: " + list.get(itemIndex).getDescription();
         reportStr += ", due date: " + list.get(itemIndex).getDueDate();
         reportStr += ", priority: " + list.get(itemIndex).getPriority();
-        reportStr += " and status: "+list.get(itemIndex).getStatus() + ".\n";
+        reportStr += " and status: " + list.get(itemIndex).getStatus() + ".\n";
+        
         report.add(reportStr);
+        
     }
     
     /**
@@ -237,24 +249,28 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void completeTask(String desc)
-    {
+    public void completeTask(String desc) {
+    	
         int index = 0;
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-            if(list.get(iterator).getDescription().equals(desc))
-            {
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+            if(list.get(iterator).getDescription().equals(desc)) {
+            	
                 index = iterator;
+                
             }
         }
-        // increases priority of all lower priority tasks by 1
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-            if(list.get(iterator).getPriority() > list.get(index).getPriority())
-            {
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+            if(list.get(iterator).getPriority() > list.get(index).getPriority()) {
+            	
                 list.get(iterator).setPriority(list.get(iterator).getPriority() - 1);
+                
             }
         }
+        
         updateReport("complete", list.get(index));
         list.remove(index);
     }
@@ -265,24 +281,29 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void displayListByPriority()
-    {
+    public void displayListByPriority() {
+    	
     	Task[] tasks = new Task[list.size()];
+    	
     	for(int iterator = 0; iterator < list.size(); iterator++) {
+    		
     		Task currentTask = list.get(iterator);
     		tasks[currentTask.getPriority()] = currentTask;
+    		
     	}
     	
         String display = "";
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-        	display += "Description: " + tasks[iterator].getDescription()+"\n";
-            display += "Due Date: " + tasks[iterator].getDueDate()+"\n";
-            display += "Priority: " + tasks[iterator].getPriority()+"\n";
-            display += "Status: " + tasks[iterator].getStatus()+"\n";
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+        	display += "Description: " + tasks[iterator].getDescription() + "\n";
+            display += "Due Date: " + tasks[iterator].getDueDate() + "\n";
+            display += "Priority: " + tasks[iterator].getPriority() + "\n";
+            display += "Status: " + tasks[iterator].getStatus() + "\n";
             display += "\n";
         	
         }
+        
         txtareaDisplay.setText(display);
     }
     
@@ -292,34 +313,42 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void displayListByDescription()
-    {
+    public void displayListByDescription() {
+    	
     	Task[] tasks = new Task[list.size()];
+    	
     	for(int iterator = 0; iterator < list.size(); iterator++) {
+    		
     		tasks[iterator] = list.get(iterator);
+    		
     	}
     	
-    	//sorts tasks alphabetically by description
     	for(int iterator = 0; iterator < list.size(); iterator++) {
+    		
     		for(int innerIter = iterator + 1; innerIter < list.size(); innerIter++) {
+    			
     			if(tasks[iterator].getDescription().toLowerCase().compareTo(tasks[innerIter].getDescription().toLowerCase()) > 0) {
+    				
     				Task tempTask = tasks[iterator];
     				tasks[iterator] = tasks[innerIter];
     				tasks[innerIter] = tempTask;
+    				
     			}
     		}
     	}
     	
         String display = "";
-        for(int iterator = 0; iterator < list.size(); iterator++)
-        {
-        	display += "Description: " + tasks[iterator].getDescription()+"\n";
-            display += "Due Date: " + tasks[iterator].getDueDate()+"\n";
-            display += "Priority: " + tasks[iterator].getPriority()+"\n";
-            display += "Status: " + tasks[iterator].getStatus()+"\n";
+        
+        for(int iterator = 0; iterator < list.size(); iterator++) {
+        	
+        	display += "Description: " + tasks[iterator].getDescription() + "\n";
+            display += "Due Date: " + tasks[iterator].getDueDate() + "\n";
+            display += "Priority: " + tasks[iterator].getPriority() + "\n";
+            display += "Status: " + tasks[iterator].getStatus() + "\n";
             display += "\n";
         	
         }
+        
         txtareaDisplay.setText(display);
     }
    
@@ -331,27 +360,32 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void updateReport(String action, Task mutant)
-    {
+    public void updateReport(String action, Task mutant) {
+    	
     	String currentDay = day.format(new Date());
     	String currentTime = time.format(new Date());
-        //report += Calendar.MONTH + "/" + Calendar.DAY_OF_MONTH + "/" + Calendar.YEAR + " @ " + Calendar.HOUR_OF_DAY + ":" + Calendar.MINUTE + ":" + Calendar.SECOND + "- ";
-        if(action.equals("delete"))
-        {
-        	report.add("Task " + mutant.getDescription() + " from list"
-        			+ " on " + currentDay + " at " + currentTime + ".\n");
+    	
+        if(action.equals("delete")) {
+        	
+        	report.add("Task " + mutant.getDescription() + " from list" + " on " 
+        			+ currentDay + " at " + currentTime + ".\n");
+        	
         }
-        else if(action.equals("add"))
-        {
+        
+        else if(action.equals("add")) {
+        	
             report.add("Task " + mutant.getDescription() + ", with due date: "
             		+ mutant.getDueDate() + ", priority: " + mutant.getPriority()
             		+ ", and status: " + mutant.getStatus() + " added to list"
             		+ " on " + currentDay + " at " + currentTime + ".\n");
-        } 
-        else if(action.equals("complete"))
-        {
+            
+        }
+        
+        else if(action.equals("complete")) {
+        	
             report.add("Task " + mutant.getDescription() + " completed and removed from list"
             		+ " on " + currentDay + " at " + currentTime + ".\n");
+            
         }
     }
     
@@ -360,87 +394,103 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void print() 
-    {
-//    	if(report.equals("")) {
-//    		txtareaDisplay.setText("No report available. Add an enrty to the "
-//    				+ "to-do list and try again.");
-//    	}
-//    	else {
-//    		System.out.println(report);
-//    	}
+    public void print() {
+
     	File file = new File("report.txt");
     	if(file.delete());
-    	//Create the file
+
     	try {
+    		
 			file.createNewFile();
-			//FileWriter writer = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(new FileWriter(file));
 			
-	    	//writer.write(report);
-	    	//writer.newLine();
 	    	for(int iterator = 0; iterator < report.size(); iterator++) {
+	    		
 	    		bw.write(report.get(iterator));
 	    		bw.newLine();
+	    		
 	    	}
-//			bw.write(report);
-//			bw.newLine();
-//			bw.write("Hello");
 			
 	    	bw.close();
+	    	
 		} 
+    	
     	catch (IOException e) {
+    		
     		e.printStackTrace();
+    		
 		}
     }
     
     /**
-     * This method stores the current array list into a file.
+     * This method stores the current array list into a file called "list.txt".
      * 
      * @return there is no return value
      */
     
-    public void save() 
-    {
+    public void save() {
+    	
     	File file = new File("list.txt");
+    	
     	if(file.delete());
-    	//Create the file
+    	
     	try {
+    		
 			file.createNewFile();
 			FileWriter writer = new FileWriter(file);
 			
 	    	writer.write(list.size() + "\n");
 	    	
 	    	for(int iterator = 0; iterator < list.size(); iterator++) {
+	    		
 	    		writer.write(list.get(iterator).getDescription() + "\n");
 	    		writer.write(list.get(iterator).getDueDate() + "\n");
 	    		writer.write(list.get(iterator).getPriority() + "\n");
+	    		
 	    		String statusStr = list.get(iterator).getStatus();
 	    		int statusInt = -1;
+	    		
 	    		if(statusStr.equals("Not started")) {
+	    			
 	    			statusInt = 0;
+	    			
 	    		}
+	    		
 	    		else if(statusStr.equals("In Progress")) {
+	    			
 	    			statusInt = 1;
+	    			
 	    		}
+	    		
 	    		else if(statusStr.equals("Finished")) {
+	    			
 	    			statusInt = 2;
+	    			
 	    		}
+	    		
 	    		writer.write(statusInt + "\n");
+	    		
 	    	}
+	    	
 	    	String reportStr = "";
+	    	
 	    	for(int iterator = 0; iterator < report.size(); iterator++) {
+	    		
 	    		reportStr += report.get(iterator);
+	    		
 	    	}
+	    	
 	    	writer.write(reportStr);
 	    	
 	    	writer.close();
+	    	
 		} 
+    	
     	catch (IOException e) {
+    		
     		e.printStackTrace();
+    		
 		}
-
-    	 
     }
     
     /**
@@ -449,45 +499,57 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void load()
-    {
+    public void load() {
+    	
     	File file = new File("list.txt");
     	BufferedReader br;
+    	
 		try {
+			
 			br = new BufferedReader(new FileReader(file));
 			int numEntries = -1;
 			if((numEntries = Integer.parseInt(br.readLine())) != -1);
 			
 			
 			for(int iterator = 0; iterator < numEntries; iterator++) {
+				
 				String description = br.readLine();
 				String dueDate = br.readLine();
 				int priority = Integer.parseInt(br.readLine());
 				Task newTask = new Task(description, dueDate, priority);
 				newTask.setStatus(Integer.parseInt(br.readLine()));
 				list.add(newTask);
+				
 			}
+			
 			String line; 
 
 	    	while ((line = br.readLine()) != null) {
+	    		
 	    	    report.add(line);
+	    	    
 	    	}
 	    	
 	    	txtareaDisplay.setText("To-do list loaded from list.txt");
 	    	
 	    	br.close();
-		} catch (FileNotFoundException e) {
+	    	
+		}
+		
+		catch (FileNotFoundException e) {
+			
 			txtareaDisplay.setText("Unable to load to-do list from list.txt");
-			//e.printStackTrace();
-		} catch (IOException e) {
-			//e.printStackTrace();
-		} 
-    	  
-    	  
+			
+		}
+		
+		catch (IOException e) {
+			
+		}   
     }
 
     /**
      * This method create the graphical user interface application.
+     * Calls the initialize() function.
      * 
      * @return there is no return value
      */
@@ -504,8 +566,7 @@ public class ToDoList
      * @return there is no return value
      */
 
-    private void initialize() 
-    {
+    private void initialize() {
 
         frame = new JFrame();
 
@@ -514,7 +575,6 @@ public class ToDoList
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         frame.getContentPane().setLayout(null);
-
         
 
         JPanel buttonPanel = new JPanel();
@@ -525,166 +585,128 @@ public class ToDoList
 
         buttonPanel.setLayout(new GridLayout(9, 1, 0, 0));
 
-        
 
         JButton btnAdd = new JButton("Add an Entry");
 
-        btnAdd.addActionListener(new ActionListener() 
-        {
+        btnAdd.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 addPanel();
 
             }
-
         });
 
         buttonPanel.add(btnAdd);
 
-        
 
         JButton btnRemove = new JButton("Remove an Entry");
 
-        btnRemove.addActionListener(new ActionListener() 
-        {
+        btnRemove.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 removePanel();
 
             }
-
         });
 
         buttonPanel.add(btnRemove);
 
-        
 
         JButton btnUpdate = new JButton("Update Entry");
 
-        btnUpdate.addActionListener(new ActionListener() 
-        {
+        btnUpdate.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 updateEntry();
 
             }
-
         });
 
         buttonPanel.add(btnUpdate);
 
-        
 
         JButton btnComplete = new JButton("Complete an Entry");
 
-        btnComplete.addActionListener(new ActionListener() 
-        {
+        btnComplete.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 completePanel();
 
             }
-
         });
 
         buttonPanel.add(btnComplete);
 
-        
 
         JButton btnDisplay = new JButton("Display To-Do List");
 
-        btnDisplay.addActionListener(new ActionListener() 
-        {
+        btnDisplay.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 displayPanel();
 
             }
-
         });
 
         buttonPanel.add(btnDisplay);
 
-        
 
         JButton btnPrint = new JButton("Print Report");
 
-        btnPrint.addActionListener(new ActionListener() 
-        {
+        btnPrint.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 printPanel();
 
             }
-
         });
 
         buttonPanel.add(btnPrint);
 
-        
 
         JButton btnSave = new JButton("Save To-Do List");
 
-        btnSave.addActionListener(new ActionListener() 
-        {
+        btnSave.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 savePanel();
 
             }
-
         });
 
         buttonPanel.add(btnSave);
 
-        
 
         JButton btnRestore = new JButton("Restore To-Do List");
 
-        btnRestore.addActionListener(new ActionListener() 
-        {
+        btnRestore.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 loadPanel();
 
             }
-
         });
 
         buttonPanel.add(btnRestore);
 
-        
 
         JButton btnRestart = new JButton("Restart List");
 
-        btnRestart.addActionListener(new ActionListener() 
-        {
+        btnRestart.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 restartPanel();
 
-                //System.exit(0);
-
             }
-
         });
 
         buttonPanel.add(btnRestart);
@@ -701,34 +723,44 @@ public class ToDoList
      * @return there is no return value
      */
 
-    public void addData(JTextField descTextBox, JTextField dueDateTextBox)
-    {
+    public void addData(JTextField descTextBox, JTextField dueDateTextBox) {
+    	
         String desc = descTextBox.getText().trim();
         String date = dueDateTextBox.getText().trim();
         
-        
         if(desc.equals("")) {
+        	
         	JOptionPane.showMessageDialog(null, "Please enter a description.");
+        	
         }
+        
         else if (date.equals("")) {
+        	
         	JOptionPane.showMessageDialog(null, "Please enter a due date.");
+        	
         }
+        
         else {
+        	
         	boolean isUnique = uniqueDescription(desc, -1);
         	
         	if(isUnique) {
+        		
         		newTask(desc, dueDateTextBox.getText().trim());
                 
-                addPanel(); //just resets fields
+                addPanel();
+                
                 JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been added.");
-        	}
-        	else {
-        		JOptionPane.showMessageDialog(null, "That description is already"
-        				+ " in use. Please enter a unique one.");
+                
         	}
         	
-        }
-        
+        	else {
+        		
+        		JOptionPane.showMessageDialog(null, "That description is already"
+        				+ " in use. Please enter a unique one.");
+        		
+        	}
+        }  
     }
 
     /**
@@ -740,16 +772,22 @@ public class ToDoList
      * user is adding a new entry
      * @return unique boolean value that will be true if description is unique
      */
+    
     public boolean uniqueDescription(String description, int updateIndex) {
+    	
     	boolean unique = true;
     	
     	for(int iterator = 0; iterator < list.size(); iterator++) {
+    		
     		if(list.get(iterator).getDescription().equals(description) && updateIndex != iterator) {
+    			
     			unique = false;
+    			
     		}
     	}
     	
     	return unique;
+    	
     }
 
     /**
@@ -760,25 +798,38 @@ public class ToDoList
      * @param descTextBox the textBox to check if the searched value is found
      * @return there is no return value
      */
-    public void removeData(JTextField descTextBox) 
-    {
+    
+    public void removeData(JTextField descTextBox) {
+    	
         String desc = descTextBox.getText().trim();
         
-        removePanel();  //resets the panel after pressing remove
+        removePanel();
         
         if(desc.equals("Item Not Found."))
+        	
             JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+        
         else if(desc.equals(""))
+        	
             JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
-        else
-        {
+        
+        else {
+        	
             deleteTask(descTextBox.getText().trim());
             JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been removed.");
+            
         }
-
     }
 
-    
+    /**
+     * This method is called when the user updates information of a task.
+     * This method checks whether
+     * 
+     * @param descTextBox 
+     * @param dueTextBox
+     * @param prioTextBox
+     * @param statusTextBox
+     */
 
     public void updateData(JTextField descTextBox, JTextField dueTextBox, JTextField prioTextBox, JComboBox statusTextBox) 
     {
@@ -788,22 +839,30 @@ public class ToDoList
         updateEntry();
         
         if(desc.equals("Item Not Found."))
+        	
             JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+        
         else if(desc.equals(""))
+        	
             JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
-        else
-        {
+        
+        else {
+        	
         	boolean isUnique = uniqueDescription(desc, itemIndex);
         	
         	if(isUnique) {
+        		
         		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
                 updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), statusTextBox.getSelectedIndex()); 
+                
         	}
+        	
         	else {
+        		
         		JOptionPane.showMessageDialog(null, "That description is already"
         				+ "in use. Please enter a unique one.");
+        		
         	}
-            
         }
     }
 
@@ -815,105 +874,127 @@ public class ToDoList
      * @return there is no return value
      */
 
-    public void search(JRadioButton descButton, JRadioButton prioButton, JTextField keyword) 
-    {
+    public void search(JRadioButton descButton, JRadioButton prioButton, JTextField keyword) {
+    	
         itemIndex = -1;
-        if(descButton.isSelected() == true)
-        {
-            for(int iterator = 0; iterator < list.size(); iterator++)
+        
+        if(descButton.isSelected() == true) {
+        	
+            for(int iterator = 0; iterator < list.size(); iterator++) 
             {
-                if(list.get(iterator).getDescription().equals(keyword.getText()))
-                {
+                
+            	if(list.get(iterator).getDescription().equals(keyword.getText())) {
+            		
                     itemIndex = iterator;
-                }
+                
+            	}
             }
         }
 
-        else if(prioButton.isSelected() == true)
-        {
+        else if(prioButton.isSelected() == true) {
+        	
         	try{
-        		for(int iterator = 0; iterator < list.size(); iterator++)
-                {
-                    if(list.get(iterator).getPriority() == Integer.parseInt(keyword.getText()))
-                    {
+        		
+        		for(int iterator = 0; iterator < list.size(); iterator++) {
+        			
+                    if(list.get(iterator).getPriority() == Integer.parseInt(keyword.getText())) {
+                    	
                         itemIndex = iterator;
+                    
                     }
                 }
         	}
-        	catch(NumberFormatException e){
+        	
+        	catch(NumberFormatException e) {
+        		
         		JOptionPane.showMessageDialog(null, "Please enter an integer "
         				+ "or search by description.");
+        		
         	}
-            
         }
-        if(itemIndex == -1)
-        {
+        
+        if(itemIndex == -1) {
+        	
             descriptionField.setText("Item Not Found.");
             dueDateField.setText("Item Not Found.");
             priorityField.setText("Item Not Found.");
+            
         }
-        else
-        {
+        
+        else {
+        	
             descriptionField.setText(list.get(itemIndex).getDescription());
             dueDateField.setText(list.get(itemIndex).getDueDate());
             priorityField.setText(Integer.toString(list.get(itemIndex).getPriority()));
             statusField.setText(list.get(itemIndex).getStatus());  
+            
         }
     }
     
-    public void search(JRadioButton descButton, JRadioButton prioButton, JTextField keyword, boolean comboBoxSearch)  //boolean designates whether it updates the status or not 
-    {
+    public void search(JRadioButton descButton, JRadioButton prioButton, JTextField keyword, boolean comboBoxSearch) {
+    	
         itemIndex = -1;
-        if(descButton.isSelected() == true)
-        {
-            for(int iterator = 0; iterator < list.size(); iterator++)
-            {
-                if(list.get(iterator).getDescription().equals(keyword.getText()))
-                {
+        
+        if(descButton.isSelected() == true) {
+        	
+            for(int iterator = 0; iterator < list.size(); iterator++) {
+            	
+                if(list.get(iterator).getDescription().equals(keyword.getText())) {
+                	
                     itemIndex = iterator;
+                
                 }
             }
         }
 
-        else if(prioButton.isSelected() == true)
-        {
+        else if(prioButton.isSelected() == true) {
+        	
         	try {
-        		 for(int iterator = 0; iterator < list.size(); iterator++)
-                 {
-                     if(list.get(iterator).getPriority() == Integer.parseInt(keyword.getText()))
-                     {
-                         itemIndex = iterator;
-                     }
-                 }
+        		 
+        		for(int iterator = 0; iterator < list.size(); iterator++) {
+        			
+	                if(list.get(iterator).getPriority() == Integer.parseInt(keyword.getText())) {
+	                	
+	                	itemIndex = iterator;
+	                
+	                }
+                }
         	}
+        	
         	catch(NumberFormatException e) {
+        		
         		JOptionPane.showMessageDialog(null, "Please enter an integer "
         				+ "or search by description.");
+        		
         	}
-           
         }
        
-        if(itemIndex == -1)
-        {
+        if(itemIndex == -1) {
+        	
             descriptionField.setText("Item Not Found.");
             dueDateField.setText("Item Not Found.");
             priorityField.setText("Item Not Found.");
+            
         }
-        else
-        {
+        
+        else {
+        	
             descriptionField.setText(list.get(itemIndex).getDescription());
             dueDateField.setText(list.get(itemIndex).getDueDate());
             priorityField.setText(Integer.toString(list.get(itemIndex).getPriority()));
 
-             if(list.get(itemIndex).getStatus().equals("In Progress")) {    //if its a combo box, checks if its the second choice. else it just shows the first option as default.
-                comboBoxStatus.setSelectedIndex(1);
+            if(list.get(itemIndex).getStatus().equals("In Progress")) {
+                
+            	comboBoxStatus.setSelectedIndex(1);
+            	
             }
-            else
-            {
+            
+            else {
+            	
                 comboBoxStatus.setSelectedIndex(0);
+                
             }
-        }
-        
+        }  
     }
     
     /**
@@ -924,22 +1005,25 @@ public class ToDoList
      * @return there is no return value
      */
     
-    public void completeEntry(JTextField descTextBox, JTextField prioTextBox, JTextField dueTextBox)
-    {
+    public void completeEntry(JTextField descTextBox, JTextField prioTextBox, JTextField dueTextBox) {
+    	
         String desc = descTextBox.getText().trim();
         
-        completePanel(); // resets the task completed panel
-        //updateEntry();
+        completePanel();
         
         if(desc.equals("Item Not Found."))
+        	
             JOptionPane.showMessageDialog(null, "Item not found. Please search for an existing entry.");
+        
         else if(desc.equals(""))
+        	
             JOptionPane.showMessageDialog(null, "Please search for an existing entry first.");
-        else
-        {
+        
+        else {
+        	
             JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
-            //updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), 2);
             completeTask(desc);
+            
         }
     }
 
@@ -949,15 +1033,13 @@ public class ToDoList
      * 
      * @return there is no return value
      */
+    
     public void addPanel() {
-
-        
 
         frame.remove(rightPanel);
 
         frame.repaint();
 
-        
 
         rightPanel = new JPanel();
 
@@ -967,7 +1049,6 @@ public class ToDoList
 
         rightPanel.setLayout(null);
 
-        
 
         JPanel entries = new JPanel();
 
@@ -977,7 +1058,6 @@ public class ToDoList
 
         entries.setLayout(new GridLayout(4, 2, 0, 0));
 
-        
 
         JLabel lblDescription = new JLabel("Description");
 
@@ -987,7 +1067,6 @@ public class ToDoList
 
         entries.add(lblDescription);
 
-        
 
         descriptionField = new JTextField();
 
@@ -995,7 +1074,6 @@ public class ToDoList
 
         descriptionField.setColumns(10);
 
-        
 
         JLabel lblDueDate = new JLabel("Due Date");
 
@@ -1005,7 +1083,6 @@ public class ToDoList
 
         entries.add(lblDueDate);
 
-        
 
         dueDateField = new JTextField();
 
@@ -1017,28 +1094,22 @@ public class ToDoList
 
         btnSubmitEntry.setBounds(228, 311, 133, 23);
 
-        btnSubmitEntry.addActionListener(new ActionListener() 
-        {
+        btnSubmitEntry.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 addData(descriptionField, dueDateField);
 
             }
-
         });
 
         rightPanel.add(btnSubmitEntry);
 
 
-
         frame.revalidate();
 
         frame.repaint();
-
         
-
     }
 
     /**
@@ -1050,12 +1121,9 @@ public class ToDoList
 
     public void removePanel() {
 
-        
-
         frame.remove(rightPanel);
 
         frame.repaint();
-
         
 
         rightPanel = new JPanel();
@@ -1065,7 +1133,6 @@ public class ToDoList
         frame.getContentPane().add(rightPanel);
 
         rightPanel.setLayout(null);
-
         
 
         JLabel lblSearchForAn = new JLabel("Search For an Entry to Remove");
@@ -1077,7 +1144,6 @@ public class ToDoList
         lblSearchForAn.setBounds(0, 0, 361, 15);
 
         rightPanel.add(lblSearchForAn);
-
         
 
         JLabel lblSearchBy = new JLabel("Search By:");
@@ -1087,13 +1153,11 @@ public class ToDoList
         lblSearchBy.setBounds(10, 25, 65, 14);
 
         rightPanel.add(lblSearchBy);
-
         
 
         JRadioButton rdbtnDescription = new JRadioButton("Description", true);
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
-
         
 
         ButtonGroup searchType = new ButtonGroup();
@@ -1110,7 +1174,6 @@ public class ToDoList
         rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
-
         
 
         textField = new JTextField();
@@ -1120,16 +1183,13 @@ public class ToDoList
         rightPanel.add(textField);
 
         textField.setColumns(10);
-
         
 
         JButton btnSearch = new JButton("Search");
 
-        btnSearch.addActionListener(new ActionListener() 
-        {
+        btnSearch.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 search(rdbtnDescription, rdbtnPriority, textField);
 
@@ -1141,7 +1201,6 @@ public class ToDoList
 
         rightPanel.add(btnSearch);
 
-        
 
         JPanel displayPanel = new JPanel();
 
@@ -1150,8 +1209,7 @@ public class ToDoList
         rightPanel.add(displayPanel);
 
         displayPanel.setLayout(null);
-
-        
+   
 
         JPanel entryPanel = new JPanel();
 
@@ -1160,7 +1218,6 @@ public class ToDoList
         displayPanel.add(entryPanel);
 
         entryPanel.setLayout(new GridLayout(4, 2, 0, 0));
-
         
 
         JLabel lblDescription = new JLabel("Description");
@@ -1170,7 +1227,6 @@ public class ToDoList
         lblDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDescription);
-
         
 
         descriptionField = new JTextField();
@@ -1180,7 +1236,6 @@ public class ToDoList
         entryPanel.add(descriptionField);
 
         descriptionField.setColumns(10);
-
         
 
         JLabel lblPriority = new JLabel("Priority #");
@@ -1190,7 +1245,6 @@ public class ToDoList
         lblPriority.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblPriority);
-
         
 
         priorityField = new JTextField();
@@ -1200,7 +1254,6 @@ public class ToDoList
         entryPanel.add(priorityField);
 
         priorityField.setColumns(10);
-
         
 
         JLabel lblDueDate = new JLabel("Due Date");
@@ -1210,7 +1263,6 @@ public class ToDoList
         lblDueDate.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDueDate);
-
         
 
         dueDateField = new JTextField();
@@ -1220,7 +1272,6 @@ public class ToDoList
         entryPanel.add(dueDateField);
 
         dueDateField.setColumns(10);
-
         
 
         JLabel lblStatus = new JLabel("Status");
@@ -1230,7 +1281,6 @@ public class ToDoList
         lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblStatus);
-
         
 
         statusField = new JTextField();
@@ -1240,28 +1290,23 @@ public class ToDoList
         entryPanel.add(statusField);
 
         statusField.setColumns(10);
-
         
 
         JButton btnRemove = new JButton("Remove Entry");
 
         btnRemove.setBounds(199, 222, 142, 23);
 
-        btnRemove.addActionListener(new ActionListener() 
-        {
+        btnRemove.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 removeData(descriptionField);
 
             }
-
         });
 
         displayPanel.add(btnRemove);
 
-        
 
         frame.revalidate();
 
@@ -1276,15 +1321,12 @@ public class ToDoList
      * @return there is no return value
      */
 
-    public void updateEntry() {
-
-        
+    public void updateEntry() {        
 
         frame.remove(rightPanel);
 
         frame.repaint();
 
-        
 
         rightPanel = new JPanel();
 
@@ -1293,7 +1335,6 @@ public class ToDoList
         frame.getContentPane().add(rightPanel);
 
         rightPanel.setLayout(null);
-
                 
 
         JLabel lblSearchForAn = new JLabel("Search For an Entry to Update");
@@ -1305,7 +1346,6 @@ public class ToDoList
         lblSearchForAn.setBounds(0, 0, 361, 15);
 
         rightPanel.add(lblSearchForAn);
-
         
 
         JLabel lblSearchBy = new JLabel("Search By:");
@@ -1315,26 +1355,18 @@ public class ToDoList
         lblSearchBy.setBounds(10, 25, 65, 14);
 
         rightPanel.add(lblSearchBy);
-
         
 
         JRadioButton rdbtnDescription = new JRadioButton("Description", true);
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
-
-        //JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
-
-        
-
+ 
         ButtonGroup searchType = new ButtonGroup();
 
         searchType.add(rdbtnDescription);
 
         searchType.add(rdbtnPriority);
-
-        //searchType.add(rdbtnDueDate);
-
-        
+   
 
         rdbtnDescription.setBounds(81, 22, 90, 23);
 
@@ -1343,11 +1375,6 @@ public class ToDoList
         rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
-
-        //rdbtnDueDate.setBounds(229, 22, 79, 23);
-
-        //rightPanel.add(rdbtnDueDate);
-
         
 
         textField = new JTextField();
@@ -1357,17 +1384,14 @@ public class ToDoList
         rightPanel.add(textField);
 
         textField.setColumns(10);
-
         
 
         JButton btnSearch = new JButton("Search");
-
         
 
         btnSearch.setBounds(263, 49, 89, 23);
 
         rightPanel.add(btnSearch);
-
         
 
         JPanel displayPanel = new JPanel();
@@ -1377,7 +1401,6 @@ public class ToDoList
         rightPanel.add(displayPanel);
 
         displayPanel.setLayout(null);
-
         
 
         JPanel entryPanel = new JPanel();
@@ -1387,7 +1410,6 @@ public class ToDoList
         displayPanel.add(entryPanel);
 
         entryPanel.setLayout(new GridLayout(4, 2, 0, 0));
-
         
 
         JLabel lblDescription = new JLabel("Description");
@@ -1397,7 +1419,6 @@ public class ToDoList
         lblDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDescription);
-
         
 
         descriptionField = new JTextField();
@@ -1405,7 +1426,6 @@ public class ToDoList
         entryPanel.add(descriptionField);
 
         descriptionField.setColumns(10);
-
         
 
         JLabel lblPriority = new JLabel("Priority #");
@@ -1415,7 +1435,6 @@ public class ToDoList
         lblPriority.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblPriority);
-
         
 
         priorityField = new JTextField();
@@ -1423,7 +1442,6 @@ public class ToDoList
         entryPanel.add(priorityField);
 
         priorityField.setColumns(10);
-
         
 
         JLabel lblDueDate = new JLabel("Due Date");
@@ -1433,7 +1451,6 @@ public class ToDoList
         lblDueDate.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDueDate);
-
         
 
         dueDateField = new JTextField();
@@ -1441,7 +1458,6 @@ public class ToDoList
         entryPanel.add(dueDateField);
 
         dueDateField.setColumns(10);
-
         
 
         JLabel lblStatus = new JLabel("Status");
@@ -1451,7 +1467,6 @@ public class ToDoList
         lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblStatus);
-
         
 
         comboBoxStatus = new JComboBox();
@@ -1462,16 +1477,14 @@ public class ToDoList
 
         entryPanel.add(comboBoxStatus);
         
-        btnSearch.addActionListener(new ActionListener() 
-        {
+        btnSearch.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
+            	
                 search(rdbtnDescription, rdbtnPriority, textField, true);
+            
             }
-
         });
-
         
 
         JButton btnRemove;
@@ -1480,20 +1493,17 @@ public class ToDoList
 
         btnRemove.setBounds(199, 222, 142, 23);
 
-        btnRemove.addActionListener(new ActionListener() 
-        {
+        btnRemove.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
+            	
                 updateData(descriptionField, dueDateField, priorityField, comboBoxStatus);
 
             }
-
         });
 
         displayPanel.add(btnRemove);
 
-        
 
         frame.revalidate();
 
@@ -1513,7 +1523,6 @@ public class ToDoList
         frame.remove(rightPanel);
 
         frame.repaint();
-
         
 
         rightPanel = new JPanel();
@@ -1523,7 +1532,6 @@ public class ToDoList
         frame.getContentPane().add(rightPanel);
 
         rightPanel.setLayout(null);
-
                 
 
         JLabel lblSearchForAn = new JLabel("Search For an Entry to Complete");
@@ -1535,7 +1543,6 @@ public class ToDoList
         lblSearchForAn.setBounds(0, 0, 361, 15);
 
         rightPanel.add(lblSearchForAn);
-
         
 
         JLabel lblSearchBy = new JLabel("Search By:");
@@ -1545,15 +1552,11 @@ public class ToDoList
         lblSearchBy.setBounds(10, 25, 65, 14);
 
         rightPanel.add(lblSearchBy);
-
         
 
         JRadioButton rdbtnDescription = new JRadioButton("Description", true);
 
         JRadioButton rdbtnPriority = new JRadioButton("Priority");
-
-        //JRadioButton rdbtnDueDate = new JRadioButton("Due Date");
-
         
 
         ButtonGroup searchType = new ButtonGroup();
@@ -1561,9 +1564,6 @@ public class ToDoList
         searchType.add(rdbtnDescription);
 
         searchType.add(rdbtnPriority);
-
-        //searchType.add(rdbtnDueDate);
-
         
 
         rdbtnDescription.setBounds(81, 22, 90, 23);
@@ -1573,11 +1573,6 @@ public class ToDoList
         rdbtnPriority.setBounds(180, 22, 70, 23);
 
         rightPanel.add(rdbtnPriority);
-
-        //rdbtnDueDate.setBounds(229, 22, 79, 23);
-
-        //rightPanel.add(rdbtnDueDate);
-
         
 
         textField = new JTextField();
@@ -1587,28 +1582,23 @@ public class ToDoList
         rightPanel.add(textField);
 
         textField.setColumns(10);
-
         
 
         JButton btnSearch = new JButton("Search");
 
-        btnSearch.addActionListener(new ActionListener() 
-        {
+        btnSearch.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent arg0) 
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
                 search(rdbtnDescription, rdbtnPriority, textField /*1*/);
 
             }
-
         });
 
         btnSearch.setBounds(263, 49, 89, 23);
 
         rightPanel.add(btnSearch);
 
-        
 
         JPanel displayPanel = new JPanel();
 
@@ -1617,7 +1607,6 @@ public class ToDoList
         rightPanel.add(displayPanel);
 
         displayPanel.setLayout(null);
-
         
 
         JPanel entryPanel = new JPanel();
@@ -1627,7 +1616,6 @@ public class ToDoList
         displayPanel.add(entryPanel);
 
         entryPanel.setLayout(new GridLayout(4, 2, 0, 0));
-
         
 
         JLabel lblDescription = new JLabel("Description");
@@ -1637,7 +1625,6 @@ public class ToDoList
         lblDescription.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDescription);
-
         
 
         descriptionField = new JTextField();
@@ -1647,7 +1634,6 @@ public class ToDoList
         entryPanel.add(descriptionField);
 
         descriptionField.setColumns(10);
-
         
 
         JLabel lblPriority = new JLabel("Priority #");
@@ -1657,7 +1643,6 @@ public class ToDoList
         lblPriority.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblPriority);
-
         
 
         priorityField = new JTextField();
@@ -1667,7 +1652,6 @@ public class ToDoList
         entryPanel.add(priorityField);
 
         priorityField.setColumns(10);
-
         
 
         JLabel lblDueDate = new JLabel("Due Date");
@@ -1677,7 +1661,6 @@ public class ToDoList
         lblDueDate.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblDueDate);
-
         
 
         dueDateField = new JTextField();
@@ -1687,7 +1670,6 @@ public class ToDoList
         entryPanel.add(dueDateField);
 
         dueDateField.setColumns(10);
-
         
 
         JLabel lblStatus = new JLabel("Status");
@@ -1697,7 +1679,6 @@ public class ToDoList
         lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
 
         entryPanel.add(lblStatus);
-
         
 
         statusField = new JTextField();
@@ -1707,7 +1688,6 @@ public class ToDoList
         entryPanel.add(statusField);
 
         statusField.setColumns(10);
-
         
 
         JButton btnComplete;
@@ -1716,21 +1696,17 @@ public class ToDoList
 
         btnComplete.setBounds(199, 222, 142, 23);
 
-        btnComplete.addActionListener(new ActionListener() 
-        {
+        btnComplete.addActionListener(new ActionListener() {
 
-            public void actionPerformed(ActionEvent e) 
-            {
+            public void actionPerformed(ActionEvent e) {
 
                 completeEntry(descriptionField, dueDateField, priorityField);
 
             }
-
         });
 
         displayPanel.add(btnComplete);
 
-        
 
         frame.revalidate();
 
@@ -1750,7 +1726,6 @@ public class ToDoList
         frame.remove(rightPanel);
 
         frame.repaint();
-
         
 
         rightPanel = new JPanel();
@@ -1801,19 +1776,23 @@ public class ToDoList
 
 		displayScroll.setBounds(0, 30, 361, 289);
 
-		
 		rightPanel.add(displayScroll);
 		
 		
 		JButton btnDisplay = new JButton("Display");
 		
 		btnDisplay.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
-				if(rdbtnPriority.isSelected() == true){
+				
+				if(rdbtnPriority.isSelected() == true) {
+					
 					displayListByPriority();
+					
 		        }
 
-		        else  {
+		        else {
+		        	
 		        	displayListByDescription();
 		           
 		        }
@@ -1823,7 +1802,6 @@ public class ToDoList
 		btnDisplay.setBounds(259, 2, 92, 23);
 		
 		rightPanel.add(btnDisplay);
-		
 		
         displayListByPriority();
 
@@ -1838,13 +1816,10 @@ public class ToDoList
 
     public void printPanel() {
 
-        
-
         frame.remove(rightPanel);
 
         frame.repaint();
 
-        
 
         rightPanel = new JPanel();
 
@@ -1853,7 +1828,6 @@ public class ToDoList
         frame.getContentPane().add(rightPanel);
 
         rightPanel.setLayout(null);
-
         
 
         txtareaDisplay = new JTextArea();
@@ -1879,13 +1853,10 @@ public class ToDoList
 
     public void savePanel() {
 
-        
-
         frame.remove(rightPanel);
 
         frame.repaint();
 
-        
 
         rightPanel = new JPanel();
 
@@ -1894,7 +1865,6 @@ public class ToDoList
         frame.getContentPane().add(rightPanel);
 
         rightPanel.setLayout(null);
-
         
 
         txtareaDisplay = new JTextArea();
@@ -1920,13 +1890,10 @@ public class ToDoList
 
     public void loadPanel() {
 
-        
-
         frame.remove(rightPanel);
 
         frame.repaint();
 
-        
 
         rightPanel = new JPanel();
 
@@ -1936,11 +1903,8 @@ public class ToDoList
 
         rightPanel.setLayout(null);
 
-        
 
         txtareaDisplay = new JTextArea();
-
-        //load(rightPanel);
 
         txtareaDisplay.setEditable(false);
 
@@ -1960,6 +1924,7 @@ public class ToDoList
      */
     
     public void restartPanel() {
+    	
     	frame.remove(rightPanel);
 		frame.repaint();
 		
@@ -1969,8 +1934,11 @@ public class ToDoList
 		rightPanel.setLayout(null);
 		
 		JButton btnRestart = new JButton("Restart");
+		
 		btnRestart.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent arg0) {
+				
 				File file = new File("list.txt");
 		    	if(file.delete());
 		    	file = new File("report.txt");
@@ -1978,8 +1946,10 @@ public class ToDoList
 		    	list.clear();
 		    	report.clear();
 		    	JOptionPane.showMessageDialog(null, "List successfully cleared!");
+		    	
 			}
 		});
+		
 		btnRestart.setBounds(239, 74, 112, 31);
 		rightPanel.add(btnRestart);
 		
@@ -1989,5 +1959,4 @@ public class ToDoList
 		txtpnRestart.setBounds(10, 11, 341, 52);
 		rightPanel.add(txtpnRestart);
     }
-    
 }
