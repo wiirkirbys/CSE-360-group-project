@@ -852,8 +852,15 @@ public class ToDoList
         	
         	if(isUnique) {
         		
-        		JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
-                updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), statusTextBox.getSelectedIndex()); 
+        		
+        		try {
+        			updateTask(desc, dueTextBox.getText().trim(), Integer.parseInt(prioTextBox.getText().trim()), statusTextBox.getSelectedIndex()); 
+        			JOptionPane.showMessageDialog(null, "\"" + desc + "\" has been updated.");
+        		}
+        		catch(NumberFormatException e) {
+        			JOptionPane.showMessageDialog(null, "Please enter an integer for the priority.");
+        		}
+                
                 
         	}
         	
