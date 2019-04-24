@@ -9,24 +9,27 @@ package toDoList;
  * @author Kevin McAllister
  * @author Tony Tipton
  */
-public class Task
-{
+public class Task {
+	
     private String description;
     private String dueDate;
     private int status;
     private int priority;
+    
     /**
      * Constructor for objects of class Task.
      * @param desc the description of the new task.
      * @param due the due date of the new task.
      * @param prio the priority of the new task. Should always be the lowest.
      */
-    public Task(String desc, String due, int prio)
-    {
+    
+    public Task(String desc, String due, int prio) {
+    	
         description = desc;
         dueDate = due;
         priority = prio;
         status = 0;
+        
     }
 
     /**
@@ -34,9 +37,11 @@ public class Task
      *
      * @param newPrio the new priority to be set
      */
-    public void setPriority(int newPrio)
-    {
+    
+    public void setPriority(int newPrio) {
+    	
         priority = newPrio;
+    
     }
     
     /**
@@ -44,9 +49,11 @@ public class Task
      *
      * @return priority the current priority of the task
      */
-    public int getPriority()
-    {
+    
+    public int getPriority() {
+    	
         return priority;
+    
     }
     
     /**
@@ -54,9 +61,11 @@ public class Task
      *
      * @param prio the new completion status to be set
      */
-    public void setStatus(int newStatus)
-    {
+    
+    public void setStatus(int newStatus) {
+    	
         status = newStatus;
+    
     }
     
     /**
@@ -64,18 +73,18 @@ public class Task
      *
      * @return status the current completion status of the task
      */
-    public String getStatus()
-    {
-        if(status == 0)
-        {
+    
+    public String getStatus() {
+        
+    	if(status == 0) {
             return "Not started";
         }
-        else if(status == 1)
-        {
+    	
+        else if(status == 1) {
             return "In Progress";
         }
-        else
-        {
+    	
+        else {
             return "Finished";
         }
     }
@@ -85,9 +94,11 @@ public class Task
      *
      * @param dueDate the new due date of the task to be set
      */
-    public void setDueDate(String newDueDate)
-    {
+    
+    public void setDueDate(String newDueDate) {
+    	
         dueDate = newDueDate;
+    
     }
     
     /**
@@ -95,9 +106,11 @@ public class Task
      *
      * @return dueDate the due date of the task
      */
-    public String getDueDate()
-    {
+    
+    public String getDueDate() {
+    	
         return dueDate;
+    
     }
     
     /**
@@ -107,7 +120,9 @@ public class Task
      */
     
     public void setDescription(String newDescription) {
+    	
     	description = newDescription;
+    
     }
     
     /**
@@ -115,8 +130,10 @@ public class Task
      *
      * @return status the current description of the task
      */
-    public String getDescription()
-    {
+    
+    public String getDescription() {
+    	
         return description;
+    
     }
 }
